@@ -14,41 +14,41 @@ export default function () {
             </div>
             <div className='w-full p-5 h-full'>
                 <DropdownProvider>
-                    <ul>
+                    <ul className='flex flex-col gap-2'>
                         <Dropdown
                             label='NAA Website'
                             icons={{ name: BsHouse }}
                             options={[
-                                { name: "Post" },
-                                { name: "Media Library" },
-                                { name: "System Settings" },
+                                { name: "Post", to: "/" },
+                                { name: "Media Library", to: "/about" },
+                                { name: "System Settings", to: "/about" },
                             ]}
                         />
                         <Dropdown
                             label='Library'
                             icons={{ name: BsBook }}
                             options={[
-                                { name: "Post" },
-                                { name: "Media Library" },
-                                { name: "System Settings" },
+                                { name: "Post", to: "/x" },
+                                { name: "Media Library", to: "/s" },
+                                { name: "System Settings",to: "/w" },
                             ]}
                         />
                         <Dropdown
                             label='Meteorology'
                             icons={{ name: BsCloudSun }}
                             options={[
-                                { name: "Post" },
-                                { name: "Media Library" },
-                                { name: "System Settings" },
+                                { name: "Post",to: "/d" },
+                                { name: "Media Library",to: "/d" },
+                                { name: "System Settings",to: "/w" },
                             ]}
                         />
                         <Dropdown
                             label='Museum'
                             icons={{ name: BsBuilding }}
                             options={[
-                                { name: "Post" },
-                                { name: "Media Library" },
-                                { name: "System Settings" },
+                                { name: "Post",to: "/e" },
+                                { name: "Media Library",to: "/d" },
+                                { name: "System Settings",to: "/r" },
                             ]}
                         />
                     </ul>

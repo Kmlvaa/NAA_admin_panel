@@ -1,45 +1,30 @@
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
-import { Link, useLocation } from "react-router-dom";
 import { useDropdownContext } from "../context/DropdownContext";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
 
 interface Props {
     label: string;
-    icons: { name: React.ElementType }
-    options: { name: string, to: string }[]
+    options: { name: string }[]
 }
 
-export default function Dropdown({ label, icons, options }: Props) {
+export default function FilterDropdown({ label, options }: Props) {
 
     const { openDropdown, setOpenDropdown } = useDropdownContext();
-    const location = useLocation();
 
     const isOpen = openDropdown === label;
-
-    const match = options.some(option => option.to === location.pathname);
-    console.log(location.pathname)
-    useEffect(() => {
-        if (match) setOpenDropdown(label);
-    }, [location.pathname, label, options, setOpenDropdown]);
 
     const toggleDropdown = () => {
         setOpenDropdown(isOpen ? null : label);
     };
 
     return (
-        <div className="w-full">
+        <div className="relative w-full">
             <motion.button
                 onClick={toggleDropdown}
-                className="w-full flex items-center justify-between p-4 rounded-2xl cursor-pointer"
-                animate={{
-                    backgroundColor: match ? "#243C7B" : "#fff",
-                    color: match ? "#fff" : "#787486",
-                }}
+                className="w-full flex items-center justify-between p-2 rounded-xl cursor-pointer border border-[#E5E7EB]"
                 transition={{ duration: 0.3, ease: "easeInOut" }}
             >
                 <div className='flex flex-row items-center justify-center gap-2'>
-                    <icons.name size={20} />
                     <h4>{label}</h4>
                 </div>
                 {isOpen ? <BsChevronUp /> : <BsChevronDown />}
@@ -52,23 +37,21 @@ export default function Dropdown({ label, icons, options }: Props) {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.25, ease: "easeInOut" }}
-                        className="w-full bg-white border border-[#F7F7F7] rounded-2xl mt-2 overflow-hidden shadow-xs z-20"
+                        className="absolute w-full bg-white border border-[#F7F7F7] rounded-2xl mt-2 overflow-hidden shadow-xs z-20"
                     >
                         <ul
-                            className={`p-5 text-[14px] border border-[#F7F7F7] rounded-2xl overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                            className={`p-3 text-[14px] border border-[#F7F7F7] rounded-xl overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                                 }`}
                         >
                             {options.map((option) => {
-                                const isOptionActive = option.to === location.pathname;
                                 return (
                                     <li key={option.name}>
-                                        <Link
-                                            to={option.to}
-                                            className={`block px-4 py-2 hover:text-blue-500 ${isOptionActive ? 'text-[#1447E6] ' : 'text-[#787486]'}`}
+                                        <div
+                                            className="block px-4 py-2 hover:text-blue-500 text-[#787486]"
                                             onClick={() => setOpenDropdown(null)}
                                         >
                                             {option.name}
-                                        </Link>
+                                        </div>
                                     </li>
                                 );
                             })}
