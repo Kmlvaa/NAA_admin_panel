@@ -5,13 +5,13 @@ import PostTable from "../components/PostTable";
 
 export default function Home() {
   return (
-    <div className="h-screen">
+    <div className="h-auto">
       <div className="flex flex-row items-center justify-between">
         <div>
           <header className="font-semibold text-xl">News & Announcements</header>
           <p className="text-[#787486]">210 posts</p>
         </div>
-        <button className="bg-[#243C7B] rounded-2xl px-4 py-2 flex flex-row gap-2 items-center text-white cursor-pointer hover:bg-[#1f3469]">
+        <button className="bg-[#243C7B] rounded-3xl px-4 py-2 flex flex-row gap-2 items-center text-white cursor-pointer hover:bg-[#1f3469]">
           <div className="rounded-full bg-[#3D5DB2] w-5 h-5 flex items-center justify-center text-white">
             <BsPlusLg />
           </div>

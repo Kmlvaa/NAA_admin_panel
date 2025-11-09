@@ -7,7 +7,7 @@ import { DropdownProvider } from '../context/DropdownContext'
 
 export default function () {
     return (
-        <div className="w-1/4 h-screen border border-[#F7F7F7] rounded-2xl flex flex-col items-center justify-between">
+        <div className="w-80 fixed h-screen border border-[#F7F7F7] rounded-2xl flex flex-col items-center justify-between">
             <div className='w-full flex flex-row gap-1 items-center border-b border-b-[#F7F7F7] p-5'>
                 <img src={logo} alt='NAA logo' />
                 <h3>NAA Control Panel</h3>
