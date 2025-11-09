@@ -1,21 +1,35 @@
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { useDropdownContext } from "../context/DropdownContext";
 import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 
 interface Props {
     label: string;
-    options: { name: string }[]
+    options: { name: string, value: string }[],
+    onChange?: (value: string) => void;
 }
 
-export default function FilterDropdown({ label, options }: Props) {
+export default function FilterDropdown({ label, options, onChange }: Props) {
+
+    const savedValue = localStorage.getItem(label);
 
     const { openDropdown, setOpenDropdown } = useDropdownContext();
+    const [selected, setSelected] = useState(
+        savedValue || options[0].value || options[0].name
+    );
 
     const isOpen = openDropdown === label;
 
     const toggleDropdown = () => {
         setOpenDropdown(isOpen ? null : label);
     };
+
+    const handleSelection = (value: string) => {
+        setSelected(value);
+        onChange?.(value);
+        setOpenDropdown(null);
+        localStorage.setItem(label, value);
+    }
 
     return (
         <div className="relative w-full">
@@ -25,7 +39,7 @@ export default function FilterDropdown({ label, options }: Props) {
                 transition={{ duration: 0.3, ease: "easeInOut" }}
             >
                 <div className='flex flex-row items-center justify-center gap-2'>
-                    <h4>{label}</h4>
+                    <h4>{selected}</h4>
                 </div>
                 {isOpen ? <BsChevronUp /> : <BsChevronDown />}
             </motion.button>
@@ -48,7 +62,10 @@ export default function FilterDropdown({ label, options }: Props) {
                                     <li key={option.name}>
                                         <div
                                             className="block px-4 py-2 hover:text-blue-500 text-[#787486]"
-                                            onClick={() => setOpenDropdown(null)}
+                                            onClick={() => {
+                                                handleSelection(option.value);
+                                                setOpenDropdown(null);
+                                            }}
                                         >
                                             {option.name}
                                         </div>

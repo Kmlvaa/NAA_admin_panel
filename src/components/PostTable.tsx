@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { posts } from '../mock/data'
+import { useEffect, useState } from 'react';
+import { posts, type Post } from '../mock/data'
 import { format } from "date-fns";
 import { BsTrash3 } from 'react-icons/bs';
 import {
@@ -16,7 +16,11 @@ import {
 } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 
-export default function PostTable() {
+interface PostTableProps {
+    filteredPosts: Post[];
+}
+
+export default function PostTable({filteredPosts}: PostTableProps) {
     const [rowsPerPage, setRowsPerPage] = useState(() => {
         const saveRow = localStorage.getItem('rowsPerPage');
         return saveRow ? Number(saveRow) : 5;
@@ -29,15 +33,16 @@ export default function PostTable() {
     useEffect(() => {
         localStorage.setItem('postTablePage', String(page));
         localStorage.setItem('rowsPerPage', String(rowsPerPage));
-    }, [page, rowsPerPage]);
+        setPage(1);
+    }, [page, rowsPerPage, filteredPosts]);
 
-    const totalPages = Math.ceil(posts.length / rowsPerPage);
+    const totalPages = Math.ceil(filteredPosts.length / rowsPerPage);
 
     const handleChangeRowsPerPage = (event: any) => {
         setRowsPerPage(parseInt(event.target.value));
         setPage(1);
     };
-    const displayedPosts = posts.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+    const displayedPosts = filteredPosts.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
     return (
         <Paper className="relative h-auto flex flex-col">
@@ -92,7 +97,7 @@ export default function PostTable() {
                                 <TableCell>{post.author}</TableCell>
                                 <TableCell>
                                     <div className="flex gap-2">
-                                        {post.actions.map((Icon, index) => (
+                                        {post.actions?.map((Icon, index) => (
                                             <Icon key={index} className={`w-4 h-4 cursor-pointer ${Icon === BsTrash3 ? 'text-[#D82C2C] hover:text-[#ea7878]' : 'text-[#243C7B] hover:text-[#5577cd]'}`} />
                                         ))}
                                     </div>

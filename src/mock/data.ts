@@ -25,7 +25,7 @@ export const posts: Post[] = [
     id: 2, image: "/images/post2.svg",
     title: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə hazırlanan “Research and Updates on the Use of Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
     description: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə həyata keçirilmiş “Pilotsuz Sistemlər: Süni İntellekt, Dizayn və Səmərəlilik” (“International Symposium on Unmanned Systems: AI, Design and Efficiency” - ISUDEF’24) beynəlxalq simpoziumunun materiallar toplusu nüfuzlu Springer Nature nəşriyyatının “Sustainable Aviation” kitab seriyasında “Research and Updates on the Use of Artificial Intelligence in Drone Technology” adı ilə dərc olunub. Bu toplu pilotsuz sistemlər, süni intellekt və aviasiya texnologiyaları sahəsində aparılan ən son elmi tədqiqatları əhatə edir. Topluda yer alan elmi məqalələr Scopus bazasında indekslənəcək və Akademiyanın alim və tədqiqatçılarının beynəlxalq səviyyədə tanınması imkanlarını daha da artıracaq. Kitabla tanış olmaq üçün keçid etməyi unutmayın. linkə",
-    type: "Announcement", sharingTime: "2026-11-06T10:19:00Z", status: "Inactive", publishStatus: "Draft", author: "Kmlvaaz", actions: [BsPencilSquare ,BsTrash3]
+    type: "Announcement", sharingTime: "2026-11-06T10:19:00Z", status: "InActive", publishStatus: "Draft", author: "Kmlvaaz", actions: [BsPencilSquare ,BsTrash3]
   },
   {
     id: 3, image: "/images/post3.svg",
@@ -41,9 +41,9 @@ export const posts: Post[] = [
   },
   {
     id: 5, image: "/images/post1.svg",
-    title: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə hazırlanan “Research and Updates on the Use of Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
+    title: "Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
     description: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə həyata keçirilmiş “Pilotsuz Sistemlər: Süni İntellekt, Dizayn və Səmərəlilik” (“International Symposium on Unmanned Systems: AI, Design and Efficiency” - ISUDEF’24) beynəlxalq simpoziumunun materiallar toplusu nüfuzlu Springer Nature nəşriyyatının “Sustainable Aviation” kitab seriyasında “Research and Updates on the Use of Artificial Intelligence in Drone Technology” adı ilə dərc olunub. Bu toplu pilotsuz sistemlər, süni intellekt və aviasiya texnologiyaları sahəsində aparılan ən son elmi tədqiqatları əhatə edir. Topluda yer alan elmi məqalələr Scopus bazasında indekslənəcək və Akademiyanın alim və tədqiqatçılarının beynəlxalq səviyyədə tanınması imkanlarını daha da artıracaq. Kitabla tanış olmaq üçün keçid etməyi unutmayın. linkə",
-    type: "News", sharingTime: "2025-11-08 14:00", status: "Inactive", publishStatus: "Draft", author: "Kmlvaaz", actions: [BsPencilSquare ,BsTrash3]
+    type: "News", sharingTime: "2025-11-08 14:00", status: "InActive", publishStatus: "Draft", author: "Kmlvaaz", actions: [BsPencilSquare ,BsTrash3]
   },
   {
     id: 6, image: "/images/post2.svg",
@@ -61,7 +61,7 @@ export const posts: Post[] = [
     id: 8, image: "/images/post2.svg",
     title: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə hazırlanan “Research and Updates on the Use of Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
     description: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə həyata keçirilmiş “Pilotsuz Sistemlər: Süni İntellekt, Dizayn və Səmərəlilik” (“International Symposium on Unmanned Systems: AI, Design and Efficiency” - ISUDEF’24) beynəlxalq simpoziumunun materiallar toplusu nüfuzlu Springer Nature nəşriyyatının “Sustainable Aviation” kitab seriyasında “Research and Updates on the Use of Artificial Intelligence in Drone Technology” adı ilə dərc olunub. Bu toplu pilotsuz sistemlər, süni intellekt və aviasiya texnologiyaları sahəsində aparılan ən son elmi tədqiqatları əhatə edir. Topluda yer alan elmi məqalələr Scopus bazasında indekslənəcək və Akademiyanın alim və tədqiqatçılarının beynəlxalq səviyyədə tanınması imkanlarını daha da artıracaq. Kitabla tanış olmaq üçün keçid etməyi unutmayın. linkə",
-    type: "News", sharingTime: "2025-11-08 17:00", status: "Inactive", publishStatus: "Draft", author: "Kmlvaaz", actions: [BsPencilSquare ,BsTrash3]
+    type: "News", sharingTime: "2025-11-08 17:00", status: "InActive", publishStatus: "Draft", author: "Kmlvaaz", actions: [BsPencilSquare ,BsTrash3]
   },
   {
     id: 9, image: "/images/post1.svg", title: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə hazırlanan “Research and Updates on the Use of Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
@@ -73,7 +73,7 @@ export const posts: Post[] = [
   },
   {
     id: 11, image: "/images/post1.svg", title: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə hazırlanan “Research and Updates on the Use of Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
-    description: "Mauris massa.", type: "News", sharingTime: "2025-11-08 20:00", status: "Inactive", publishStatus: "Draft", author: "Kmlvaaz", actions: [BsPencilSquare ,BsTrash3]
+    description: "Mauris massa.", type: "News", sharingTime: "2025-11-08 20:00", status: "InActive", publishStatus: "Draft", author: "Kmlvaaz", actions: [BsPencilSquare ,BsTrash3]
   },
   {
     id: 12, image: "/images/post1.svg", title: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə hazırlanan “Research and Updates on the Use of Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
@@ -85,7 +85,7 @@ export const posts: Post[] = [
   },
   {
     id: 14, image: "/images/post1.svg", title: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə hazırlanan “Research and Updates on the Use of Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
-    description: "Per conubia nostra, per inceptos himenaeos.", type: "News", sharingTime: "2025-11-08 23:00", status: "Inactive", publishStatus: "Draft", author: "Nina", actions: [BsPencilSquare ,BsTrash3]
+    description: "Per conubia nostra, per inceptos himenaeos.", type: "News", sharingTime: "2025-11-08 23:00", status: "InActive", publishStatus: "Draft", author: "Nina", actions: [BsPencilSquare ,BsTrash3]
   },
   {
     id: 15, image: "/images/post1.svg", title: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə hazırlanan “Research and Updates on the Use of Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
@@ -97,7 +97,7 @@ export const posts: Post[] = [
   },
   {
     id: 17, image: "/images/post1.svg", title: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə hazırlanan “Research and Updates on the Use of Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
-    description: "Curabitur tortor.", type: "News", sharingTime: "2025-11-09 02:00", status: "Inactive", publishStatus: "Draft", author: "Quinn", actions: [BsPencilSquare ,BsTrash3]
+    description: "Curabitur tortor.", type: "News", sharingTime: "2025-11-09 02:00", status: "InActive", publishStatus: "Draft", author: "Quinn", actions: [BsPencilSquare ,BsTrash3]
   },
   {
     id: 18, image: "/images/post1.svg", title: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə hazırlanan “Research and Updates on the Use of Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
@@ -109,6 +109,6 @@ export const posts: Post[] = [
   },
   {
     id: 20, image: "/images/post1.svg", title: "Milli Aviasiya Akademiyasının təşkilatçılığı ilə hazırlanan “Research and Updates on the Use of Artificial Intelligence in Drone Technology” kitabı Springer Nature nəşriyyatında dərc olunub",
-    description: "In scelerisque sem at dolor.", type: "News", sharingTime: "2025-11-09 05:00", status: "Inactive", publishStatus: "Draft", author: "Tina", actions: [BsPencilSquare ,BsTrash3]
+    description: "In scelerisque sem at dolor.", type: "News", sharingTime: "2025-11-09 05:00", status: "InActive", publishStatus: "Draft", author: "Tina", actions: [BsPencilSquare ,BsTrash3]
   },
 ];
