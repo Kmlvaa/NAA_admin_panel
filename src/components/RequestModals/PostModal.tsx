@@ -11,6 +11,46 @@ export default function PostModal({ opened, onClose }: PostModalProps) {
 
     const [step, setStep] = useState<1 | 2>(1);
 
+    const [formdata, setFormData] = useState({
+        image: "",
+        title: "",
+        slug: "",
+        description: "",
+        type: "News" as "News" | "Announcement",
+        sharingTime: "",
+        status: "Active" as "Active" | "InActive",
+        publishStatus: "Draft" as "Published" | "Draft",
+        author: "",
+        galleryImages: [] as string[],
+    });
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const HandleImageChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const file = e.target.files?.[0];
+        if (file) setFormData(prev => ({ ...prev, image: URL.createObjectURL(file) }));
+    };
+
+    const handleGalleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        const urls = files.map((f) => URL.createObjectURL(f));
+        setFormData((prev) => ({
+            ...prev,
+            galleryImages: [...prev.galleryImages, ...urls],
+        }));
+    };
+
+    const HandleSubmit = () => {
+        console.log(formdata);
+        onClose();
+    }
 
     return (
         <Modal
@@ -96,11 +136,13 @@ export default function PostModal({ opened, onClose }: PostModalProps) {
 
                         {/* Form */}
                         <div className="space-y-5">
-
                             <div>
                                 <label className="block text-sm font-medium text-[#374151] mb-1">Title</label>
                                 <input
                                     type="text"
+                                    name="title"
+                                    value={formdata.title}
+                                    onChange={handleChange}
                                     placeholder="Enter title"
                                     className="w-full border border-[#F7F7F7] rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                                 />
@@ -110,6 +152,9 @@ export default function PostModal({ opened, onClose }: PostModalProps) {
                                 <label className="block text-sm font-medium text-[#374151]  mb-1">Slug</label>
                                 <input
                                     type="text"
+                                    name="slug"
+                                    value={formdata.slug}
+                                    onChange={handleChange}
                                     placeholder="naa.edu.az/"
                                     className="w-full border border-[#F7F7F7] rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                                 />
@@ -118,11 +163,24 @@ export default function PostModal({ opened, onClose }: PostModalProps) {
                             <div>
                                 <label className="block text-sm font-medium text-[#374151] mb-1">Category</label>
                                 <div className="flex gap-3">
-                                    <button className="flex flex-row items-center gap-2 px-4 py-2 rounded-full border border-[#1447E6] text-[#1447E6] text-sm hover:bg-[#1447E6] hover:text-white cursor-pointer">
+                                    <button onClick={() =>
+                                        setFormData((prev) => ({ ...prev, type: "News" }))
+                                    }
+                                        className={`flex flex-row items-center gap-2 px-4 py-2 rounded-full border border-[#1447E6] text-[#1447E6] text-sm hover:bg-[#1447E6] hover:text-white cursor-pointer"
+                                         ${formdata.type === "News"
+                                                ? "bg-[#1447E6] text-white border-[#1447E6]"
+                                                : "border-[#1447E6] text-[#1447E6] hover:bg-[#1447E6] hover:text-white"}
+                                        `}>
                                         <BsNewspaper />
                                         <p>News</p>
                                     </button>
-                                    <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#1447E6] text-[#1447E6] text-sm hover:bg-[#1447E6] hover:text-white cursor-pointer">
+                                    <button onClick={() =>
+                                        setFormData((prev) => ({ ...prev, type: "Announcement" }))
+                                    } className={`flex items-center gap-2 px-4 py-2 rounded-full border border-[#1447E6] text-[#1447E6] text-sm hover:bg-[#1447E6] hover:text-white cursor-pointer
+                                        ${formdata.type === "News"
+                                            ? "bg-[#1447E6] text-white border-[#1447E6]"
+                                            : "border-[#1447E6] text-[#1447E6] hover:bg-[#1447E6] hover:text-white"}
+                                        `}>
                                         <BsMegaphone />
                                         <p>Announcement</p>
                                     </button>
@@ -132,8 +190,21 @@ export default function PostModal({ opened, onClose }: PostModalProps) {
                             <div>
                                 <label className="block text-sm font-medium text-[#374151] mb-1">Cover Image</label>
                                 <div className="w-full border border-[#F0F0F0] rounded-lg py-2 text-center text-gray-500 text-sm cursor-pointer hover:bg-gray-50">
-                                    Upload Cover Image
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={HandleImageChange}
+                                        className="hidden"
+                                        placeholder="Upload Cover Image"
+                                    />
                                 </div>
+                                {formdata.image && (
+                                    <img
+                                        src={formdata.image}
+                                        alt="cover"
+                                        className="mt-2 w-32 h-32 object-cover rounded-lg"
+                                    />
+                                )}
                             </div>
 
                             <div>
@@ -187,8 +258,11 @@ export default function PostModal({ opened, onClose }: PostModalProps) {
                                         </button>
                                     </div>
 
-                                    <div className="h-40 bg-white text-sm text-[#F7F7F7] border-b rounded-lg">
-                                        <textarea className="w-full h-full" />
+                                    <div className="h-40 bg-white text-sm text-black border-b rounded-lg">
+                                        <textarea className="w-full h-full"
+                                            name="description"
+                                            value={formdata.description}
+                                            onChange={handleChange} />
                                     </div>
                                 </div>
                             </div>
@@ -277,10 +351,29 @@ export default function PostModal({ opened, onClose }: PostModalProps) {
                         <div>
                             <label className="block text-sm font-medium text-[#374151] mb-1">Gallery Images</label>
                             <p className="text-[#374151] text-xs mb-3">JPG/PNG, multiple allowed</p>
-                            <div className="w-full border h-60 border-[#F0F0F0] rounded-lg py-2 text-center flex flex-col items-center justify-center text-gray-500 text-sm cursor-pointer hover:bg-gray-50">
+                            <label className="w-full border h-60 border-[#F0F0F0] rounded-lg py-2 text-center flex flex-col items-center justify-center text-gray-500 text-sm cursor-pointer hover:bg-gray-50">
                                 <BsUpload />
-                                <p>Upload an Image</p>
-                            </div>
+                                <p>Upload Images</p>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    onChange={handleGalleryChange}
+                                    className="hidden"
+                                />
+                            </label>
+                            {formdata.galleryImages.length > 0 && (
+                                <div className="mt-3 grid grid-cols-4 gap-2">
+                                    {formdata.galleryImages.map((img, i) => (
+                                        <img
+                                            key={i}
+                                            src={img}
+                                            alt="gallery"
+                                            className="w-full h-24 object-cover rounded-lg"
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -289,7 +382,7 @@ export default function PostModal({ opened, onClose }: PostModalProps) {
                             className="w-full mt-6 bg-[#243C7B] text-white rounded-lg py-3 text-sm hover:bg-[#3D5DB2] cursor-pointer transition">
                             Back
                         </button>
-                        <button
+                        <button onClick={HandleSubmit}
                             className="w-full mt-6 bg-[#243C7B] text-white rounded-lg py-3 text-sm hover:bg-[#3D5DB2] cursor-pointer transition">
                             Submit
                         </button>

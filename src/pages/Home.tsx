@@ -6,10 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { posts } from "../api/posts/postMock";
 import { useDisclosure } from "@mantine/hooks";
 import PostModal from "../components/RequestModals/PostModal";
-import UpdateModal from "../components/RequestModals/UpdateModal";
-import DeleteModal from "../components/RequestModals/DeleteModal";
 import SuccessfulModal from "../components/RequestModals/SuccessfulModal";
-// import { getPosts } from "../mock/postService";
 
 export default function Home() {
 
@@ -39,36 +36,30 @@ export default function Home() {
   }, [typeFilter, statusFilter, search]);
 
    const [opened, { open, close }] = useDisclosure(false);
-   const [openedUpdate, { open: openUpdate, close: closeUpdate }] = useDisclosure(false);
-   const [openedDelete, { open: openDelete, close: closeDelete }] = useDisclosure(false);
-   const [succ, { open: success, close: closeSuc }] = useDisclosure(false);
+  //  const [succ, { open: success, close: closeSuc }] = useDisclosure(false);
 
   return (
     <div className="h-auto">
       <PostModal opened={opened} onClose={close} />
-      <UpdateModal openUpdate={openedUpdate} onClose={closeUpdate} />
-      <DeleteModal openDelete={openedDelete} onClose={closeDelete} />
-      <SuccessfulModal openDelete={succ} onClose={closeSuc} />
+      {/* <SuccessfulModal openDelete={succ} onClose={closeSuc} /> */}
       <div className="flex flex-row items-center justify-between">
         <div>
           <header className="font-semibold text-xl">News & Announcements</header>
           <p className="text-[#787486]">{posts.length} posts</p>
         </div>
-        <button onClick={openUpdate}>Update</button>
-        <button onClick={openDelete}>Delete</button>
-        <button onClick={success}>Success</button>
-        <button className="bg-[#243C7B] rounded-3xl px-4 py-2 flex flex-row gap-2 items-center text-white cursor-pointer hover:bg-[#1f3469]"
+        <button className="bg-[#243C7B] rounded-3xl max-sm:rounded-full max-sm:p-2 px-4 py-2 flex flex-row gap-2 items-center text-white cursor-pointer hover:bg-[#1f3469]"
           onClick={open}
         >
           <div className="rounded-full bg-[#3D5DB2] w-5 h-5 flex items-center justify-center text-white">
             <BsPlusLg />
           </div>
-          <p>Add News or Announcement</p>
+          <p className="max-lg:hidden">Add News or Announcement</p>
+          <p className="max-sm:hidden min-lg:hidden">Add</p>
         </button>
       </div>
-      <div className="flex flex-row items-center gap-5 w-full p-5 border border-[#F7F7F7] mt-2 rounded-2xl">
+      <div className="flex flex-row items-center gap-5 w-full p-5 max-sm:p-0 max-sm:mb-5 border border-[#F7F7F7] mt-2 rounded-2xl max-sm:flex-col max-sm:items-start">
         <DropdownProvider>
-          <ul className='flex flex-row gap-5 w-1/2'>
+          <ul className='flex flex-row gap-5 w-1/2 max-sm:w-full'>
             <FilterDropdown
               label='All Posts'
               options={[

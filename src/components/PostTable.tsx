@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { type Post } from '../api/posts/postMock'
+import { type Post } from '../api/posts/postTypes'
 import { format } from "date-fns";
-import { BsTrash3 } from 'react-icons/bs';
+import { BsPencilSquare, BsTrash3 } from 'react-icons/bs';
 import {
     Table,
     TableBody,
@@ -16,11 +16,12 @@ import {
 } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 
+
 interface PostTableProps {
     filteredPosts: Post[];
 }
 
-export default function PostTable({filteredPosts}: PostTableProps) {
+export default function PostTable({ filteredPosts }: PostTableProps) {
     const [rowsPerPage, setRowsPerPage] = useState(() => {
         const saveRow = localStorage.getItem('rowsPerPage');
         return saveRow ? Number(saveRow) : 5;
@@ -33,8 +34,18 @@ export default function PostTable({filteredPosts}: PostTableProps) {
     useEffect(() => {
         localStorage.setItem('postTablePage', String(page));
         localStorage.setItem('rowsPerPage', String(rowsPerPage));
-        setPage(1);
-    }, [page, rowsPerPage, filteredPosts]);
+    }, [page, rowsPerPage]);
+
+
+    //reset page number when posts filtered
+    const [prevLength, setPrevLength] = useState(filteredPosts.length);
+    useEffect(() => {
+        if (filteredPosts.length !== prevLength) {
+            setPage(1);
+            setPrevLength(filteredPosts.length);
+        }
+    }, [filteredPosts.length, prevLength]);
+    
 
     const totalPages = Math.ceil(filteredPosts.length / rowsPerPage);
 
@@ -47,7 +58,7 @@ export default function PostTable({filteredPosts}: PostTableProps) {
     return (
         <Paper className="relative h-auto flex flex-col max-lg:z-0">
             <TableContainer className="flex-1 overflow-auto">
-                <Table stickyHeader className='min-w-[1200px]'>
+                <Table stickyHeader className='min-w-[1100px]'>
                     <TableHead>
                         <TableRow>
                             <TableCell><p className='text-[#243C7B] font-semibold'>Post</p></TableCell>
@@ -97,9 +108,8 @@ export default function PostTable({filteredPosts}: PostTableProps) {
                                 <TableCell>{post.author}</TableCell>
                                 <TableCell>
                                     <div className="flex gap-2">
-                                        {post.actions?.map((Icon, index) => (
-                                            <Icon key={index} className={`w-4 h-4 cursor-pointer ${Icon === BsTrash3 ? 'text-[#D82C2C] hover:text-[#ea7878]' : 'text-[#243C7B] hover:text-[#5577cd]'}`} />
-                                        ))}
+                                        <BsTrash3 className='w-4 h-4 cursor-pointer text-[#243C7B] hover:text-[#5577cd]' />
+                                        <BsPencilSquare className='w-4 h-4 cursor-pointer text-[#D82C2C] hover:text-[#ea7878]' />
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -121,7 +131,7 @@ export default function PostTable({filteredPosts}: PostTableProps) {
                         <button
                             key={i}
                             onClick={() => setPage(i + 1)}
-                            className={`w-8 h-8 flex items-center justify-center rounded-full ${page === i + 1 ? 'bg-[#243C7B] text-white' : 'text-black hover:bg-gray-200'
+                            className={`w-8 h-8 flex items-center cursor-pointer justify-center rounded-full ${page === i + 1 ? 'bg-[#243C7B] text-white' : 'text-black hover:bg-gray-200'
                                 }`}
                         >
                             {i + 1}
