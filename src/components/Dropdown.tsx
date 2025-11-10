@@ -28,35 +28,29 @@ export default function Dropdown({ label, icons, options }: Props) {
     };
 
     return (
-        <div className="w-full">
+        <div className="w-full max-lg:relative">
             <motion.button
                 onClick={toggleDropdown}
-                className="w-full flex items-center justify-between p-4 rounded-2xl cursor-pointer"
-                animate={{
-                    backgroundColor: match ? "#243C7B" : "#fff",
-                    color: match ? "#fff" : "#787486",
-                }}
+                className={`w-full flex items-center justify-between max-lg:justify-center p-4 rounded-2xl cursor-pointer ${isOpen ? 'bg-[#243C7B] text-white' : 'text-[#787486]'}`}
+              
                 transition={{ duration: 0.3, ease: "easeInOut" }}
             >
                 <div className='flex flex-row items-center justify-center gap-2'>
                     <icons.name size={20} />
-                    <h4>{label}</h4>
+                    <h4 className="max-lg:hidden">{label}</h4>
                 </div>
-                {isOpen ? <BsChevronUp /> : <BsChevronDown />}
+                <div className="max-lg:hidden">
+                    {isOpen ? <BsChevronUp /> : <BsChevronDown />}
+                </div>
             </motion.button>
 
             <AnimatePresence>
-                {isOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.25, ease: "easeInOut" }}
-                        className="w-full bg-white border border-[#F7F7F7] rounded-2xl mt-2 overflow-hidden shadow-xs z-20"
+                
+                    <div
+                        className={`w-full bg-white border border-[#F7F7F7] rounded-2xl mt-2 overflow-hidden shadow-xs z-20 max-lg:absolute max-lg:w-40 max-lg:z-999 transition-all duration-300 ease-in-out ${isOpen ? "max-h-96" : "max-h-0"}`}
                     >
                         <ul
-                            className={`p-5 text-[14px] border border-[#F7F7F7] rounded-2xl overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-                                }`}
+                            className={`p-5 text-[14px] border border-[#F7F7F7] rounded-2xl`}
                         >
                             {options.map((option) => {
                                 const isOptionActive = option.to === location.pathname;
@@ -73,8 +67,7 @@ export default function Dropdown({ label, icons, options }: Props) {
                                 );
                             })}
                         </ul>
-                    </motion.div>
-                )}
+                    </div>
             </AnimatePresence>
         </div>
     )

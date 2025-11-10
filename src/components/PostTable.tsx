@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { posts, type Post } from '../mock/data'
+import { type Post } from '../api/posts/postMock'
 import { format } from "date-fns";
 import { BsTrash3 } from 'react-icons/bs';
 import {
@@ -45,9 +45,9 @@ export default function PostTable({filteredPosts}: PostTableProps) {
     const displayedPosts = filteredPosts.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
     return (
-        <Paper className="relative h-auto flex flex-col">
+        <Paper className="relative h-auto flex flex-col max-lg:z-0">
             <TableContainer className="flex-1 overflow-auto">
-                <Table stickyHeader>
+                <Table stickyHeader className='min-w-[1200px]'>
                     <TableHead>
                         <TableRow>
                             <TableCell><p className='text-[#243C7B] font-semibold'>Post</p></TableCell>
@@ -64,10 +64,10 @@ export default function PostTable({filteredPosts}: PostTableProps) {
                             <TableRow key={idx}>
                                 <TableCell>
                                     <div className='flex flex-row gap-2'>
-                                        <img src={post.image} alt='post image' className='w-32 h-24 rounded-xl' />
+                                        <img src={post.image} alt='post image' className='w-32 h-24 rounded-xl max-xs:h-16' />
                                         <div className='w-40 text-start h-24'>
-                                            <div className='font-semibold text-lg truncate'>{post.title}</div>
-                                            <div className='line-clamp-3 text-[#787486]'>{post.description}</div>
+                                            <div className='font-semibold text-lg truncate max-xs:text-[14px]'>{post.title}</div>
+                                            <div className='line-clamp-3 text-[#787486] max-xs:text-xs'>{post.description}</div>
                                         </div>
                                     </div>
                                 </TableCell>

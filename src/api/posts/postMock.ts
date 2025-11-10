@@ -1,18 +1,6 @@
 import { BsPencilSquare, BsTrash3 } from "react-icons/bs";
-import type { PostStatus, PostType, PublishStatus } from "./enum";
+import type { Post } from "./postTypes";
 
-export interface Post {
-  id: number;
-  image: string;
-  title: string;
-  description: string;
-  type: PostType;
-  sharingTime: string;
-  status: PostStatus;
-  publishStatus: PublishStatus;
-  author: string;
-  actions: React.ElementType[];
-}
 
 export const posts: Post[] = [
   {
