@@ -41,7 +41,7 @@ export default function Home() {
   }, [data, typeFilter, statusFilter, search]);
 
   const [addOpened, { open: openAdd, close: closeAdd }] = useDisclosure(false);
-  const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
+  const [editOpened, { close: closeEdit }] = useDisclosure(false);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
 
   // Update handler
@@ -103,7 +103,7 @@ export default function Home() {
           filteredPosts={filteredPosts}
           onEdit={(post) => {
             setEditingPost(post);
-            open();
+            openAdd();
           }}
           
         />
