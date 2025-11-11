@@ -2,7 +2,6 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { useDropdownContext } from "../context/DropdownContext";
 import { AnimatePresence, motion } from "framer-motion";
-// import { useEffect } from "react";
 import { useSidebarExpanded } from "../context/NavbarContext";
 
 interface Props {
@@ -18,18 +17,13 @@ export default function Dropdown({ label, icons, options }: Props) {
 
     const isOpen = openDropdown === label;
 
-    // const match = options.some(option => option.to === location.pathname);
     console.log(location.pathname)
-    // useEffect(() => {
-    //     if (match) setOpenDropdown(label);
-    // }, [location.pathname, label, options, setOpenDropdown]);
 
     const toggleDropdown = () => {
         setOpenDropdown(isOpen ? null : label);
     };
 
     const { isExpanded } = useSidebarExpanded();
-    console.log(isExpanded)
 
     return (
         <div className="w-full max-lg:relative">

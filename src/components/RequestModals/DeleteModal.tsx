@@ -4,9 +4,11 @@ import { BsTrash3 } from "react-icons/bs";
 interface DeleteModalProps {
     openDelete: boolean;
     onClose: () => void;
+    onConfirm: () => void; 
 }
 
-export default function DeleteModal({ openDelete, onClose }: DeleteModalProps) {
+export default function DeleteModal({ openDelete, onClose, onConfirm }: DeleteModalProps) {
+    
 
     return (
         <Modal
@@ -32,7 +34,7 @@ export default function DeleteModal({ openDelete, onClose }: DeleteModalProps) {
                         className="w-full mt-6 bg-white border-[#F7F7F7] text-black rounded-lg py-3 text-sm hover:bg-[#FDEEEE] cursor-pointer transition">
                         No
                     </button>
-                    <button
+                    <button onClick={onConfirm}
                         className="w-full mt-6 bg-[#D82C2C] text-white rounded-lg py-3 text-sm hover:bg-[#dc4242] cursor-pointer transition">
                         Yes
                     </button>

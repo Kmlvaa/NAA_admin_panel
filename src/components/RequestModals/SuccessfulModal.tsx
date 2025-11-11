@@ -2,15 +2,15 @@ import { Modal } from "@mantine/core";
 import { BsCheckLg } from "react-icons/bs";
 
 interface SuccessfulModalProps {
-    openDelete: boolean;
+    opened: boolean;
     onClose: () => void;
 }
 
-export default function SuccessfulModal({ openDelete, onClose }: SuccessfulModalProps) {
+export default function SuccessfulModal({ opened, onClose }: SuccessfulModalProps) {
 
     return (
         <Modal
-            opened={openDelete}
+            opened={opened}
             onClose={onClose}
             centered
             size="lg"

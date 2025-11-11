@@ -14,8 +14,7 @@ export default function () {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    // Close dropdown when clicking outside
-    useEffect(() => {
+        useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setOpen(false);
@@ -111,7 +110,7 @@ export default function () {
             </motion.div>
 
         {/*Small screens header*/}
-            <div className="fixed min-sm:hidden w-full z-50 bg-white p-5 h-20 flex flex-row items-center justify-between border-b border-b-[#eaeaea]">
+            <div className="fixed sm:hidden w-full z-50 bg-white p-5 h-20 flex flex-row items-center justify-between border-b border-b-[#eaeaea]">
                 {/* Logo */}
                 <div>
                     <img src={logo} alt="NAA logo" className="h-8 w-auto" />

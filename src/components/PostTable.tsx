@@ -15,13 +15,22 @@ import {
     IconButton,
 } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { posts } from '../api/posts/postMock';
+import DeleteModal from './RequestModals/DeleteModal';
 
 
 interface PostTableProps {
     filteredPosts: Post[];
+    onEdit: (post: Post) => void;
 }
 
-export default function PostTable({ filteredPosts }: PostTableProps) {
+export default function PostTable({ filteredPosts, onEdit }: PostTableProps) {
+
+    const [data, setData] = useState<Post[]>(() => {
+        const saved = localStorage.getItem("posts");
+        return saved ? JSON.parse(saved) : posts;
+    });
+
     const [rowsPerPage, setRowsPerPage] = useState(() => {
         const saveRow = localStorage.getItem('rowsPerPage');
         return saveRow ? Number(saveRow) : 5;
@@ -40,12 +49,17 @@ export default function PostTable({ filteredPosts }: PostTableProps) {
     //reset page number when posts filtered
     const [prevLength, setPrevLength] = useState(filteredPosts.length);
     useEffect(() => {
+        const latestPosts = [...filteredPosts].reverse();
+        const start = (page - 1) * rowsPerPage;
+        const end = page * rowsPerPage;
+        setDisplayedPosts(latestPosts.slice(start, end));
+
         if (filteredPosts.length !== prevLength) {
             setPage(1);
             setPrevLength(filteredPosts.length);
         }
-    }, [filteredPosts.length, prevLength]);
-    
+    }, [filteredPosts, page, prevLength]);
+
 
     const totalPages = Math.ceil(filteredPosts.length / rowsPerPage);
 
@@ -53,7 +67,17 @@ export default function PostTable({ filteredPosts }: PostTableProps) {
         setRowsPerPage(parseInt(event.target.value));
         setPage(1);
     };
-    const displayedPosts = filteredPosts.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+
+    const [displayedPosts, setDisplayedPosts] = useState<Post[]>([])
+    useEffect(() => {
+        const latestPosts = [...filteredPosts].reverse();
+        const start = (page - 1) * rowsPerPage;
+        const end = page * rowsPerPage;
+        setDisplayedPosts(latestPosts.slice(start, end));
+    }, [filteredPosts, page, rowsPerPage, data]);
+
+    const [openDelete, setOpenDelete] = useState(false);
+    const [deletingPost, setDeletingPost] = useState<Post | null>(null);
 
     return (
         <Paper className="relative h-auto flex flex-col max-lg:z-0">
@@ -108,8 +132,14 @@ export default function PostTable({ filteredPosts }: PostTableProps) {
                                 <TableCell>{post.author}</TableCell>
                                 <TableCell>
                                     <div className="flex gap-2">
-                                        <BsTrash3 className='w-4 h-4 cursor-pointer text-[#243C7B] hover:text-[#5577cd]' />
-                                        <BsPencilSquare className='w-4 h-4 cursor-pointer text-[#D82C2C] hover:text-[#ea7878]' />
+                                        <BsPencilSquare className='w-4 h-4 cursor-pointer text-[#D82C2C] hover:text-[#ea7878]'
+                                            onClick={() => onEdit(post)} />
+                                        <BsTrash3 className='w-4 h-4 cursor-pointer text-[#243C7B] hover:text-[#5577cd]'
+                                            onClick={() => {
+                                                setDeletingPost(post);
+                                                setOpenDelete(true);
+                                            }}
+                                        />
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -156,6 +186,19 @@ export default function PostTable({ filteredPosts }: PostTableProps) {
                     </Select>
                 </div>
             </div>
+            <DeleteModal
+                openDelete={openDelete}
+                onClose={() => setOpenDelete(false)}
+                onConfirm={() => {
+                    if (deletingPost) {
+                        const updated = data.filter(p => p.id !== deletingPost.id);
+                        setData(updated);
+                        localStorage.setItem("posts", JSON.stringify(updated));
+                        setOpenDelete(false);
+                        setDeletingPost(null);
+                    }
+                }}
+            />
         </Paper>
     );
 }

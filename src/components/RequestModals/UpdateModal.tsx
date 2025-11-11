@@ -1,16 +1,96 @@
 import { Modal } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsEraser, BsFilter, BsFilterLeft, BsFilterRight, BsLink45Deg, BsListOl, BsListUl, BsMegaphone, BsNewspaper, BsUpload, BsXLg } from "react-icons/bs";
+import type { Post } from "../../api/posts/postTypes";
 
 interface UpdateModalProps {
     openUpdate: boolean;
     onClose: () => void;
+    editingPost?: Post | null;
+    onSave: (updatedPost: Post) => void;
 }
 
-export default function UpdateModal({ openUpdate, onClose }: UpdateModalProps) {
+export default function UpdateModal({ openUpdate, onClose, editingPost, onSave }: UpdateModalProps) {
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setformData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const toBase64 = (file: File) =>
+        new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.readAsDataURL(file);
+        });
+
+    const HandleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const base64 = await toBase64(file);
+            setformData((prev) => ({ ...prev, image: base64 }));
+        }
+    };
+
+    const handleGalleryChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        const base64s = await Promise.all(files.map(toBase64));
+        setformData((prev) => ({
+            ...prev,
+            galleryImages: [...prev.galleryImages, ...base64s],
+        }));
+    };
 
     const [step, setStep] = useState<1 | 2>(1);
 
+  const [formData, setformData] = useState({
+        image: "",
+        title: "",
+        slug: "",
+        description: "",
+        type: "News" as "News" | "Announcement",
+        sharingTime: "",
+        status: "Active" as "Active" | "InActive",
+        publishStatus: "Draft" as "Published" | "Draft",
+        author: "Someone",
+        galleryImages: [] as string[],
+    });
+
+    useEffect(() => {
+        if (editingPost) {
+            setformData({
+                title: editingPost.title,
+                slug: editingPost.slug,
+                type: editingPost.type,
+                image: editingPost.image,
+                description: editingPost.description,
+                sharingTime: editingPost.sharingTime,
+                publishStatus: editingPost.publishStatus,
+                author: editingPost.author,
+                status: editingPost.status,
+                galleryImages: editingPost.galleryImages || [],
+            });
+        }
+    }, [editingPost]);
+
+    const handleSubmit = () => {
+        if (!editingPost) return;
+
+        const updatedPost: Post = {
+            ...editingPost,
+            title: formData.title,
+            slug: formData.slug,
+            type: formData.type,
+            image: formData.image,
+            description: formData.description,
+            galleryImages: formData.galleryImages,
+        };
+
+        onSave(updatedPost);
+        onClose();
+    };
 
     return (
         <Modal
@@ -90,17 +170,19 @@ export default function UpdateModal({ openUpdate, onClose }: UpdateModalProps) {
                             </div>
                             <div className="flex flex-row items-center gap-2">
                                 <div className={`w-1/2 h-1 rounded-full ${step === 1 ? 'bg-[#243C7B]' : 'bg-[#E0E7FA]'}`}></div>
-                                <div className={`w-1/2 h-1 rounded-full ${step === 2 ? 'bg-[#243C7B]' : 'bg-[#E0E7FA]'}`}></div>
+                                <div className={`w-1/2 h-1 rounded-full ${step > 1 ? 'bg-[#243C7B]' : 'bg-[#E0E7FA]'}`}></div>
                             </div>
                         </div>
 
                         {/* Form */}
                         <div className="space-y-5">
-
                             <div>
                                 <label className="block text-sm font-medium text-[#374151] mb-1">Title</label>
                                 <input
                                     type="text"
+                                    name="title"
+                                    value={formData.title}
+                                    onChange={handleChange}
                                     placeholder="Enter title"
                                     className="w-full border border-[#F7F7F7] rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                                 />
@@ -110,6 +192,9 @@ export default function UpdateModal({ openUpdate, onClose }: UpdateModalProps) {
                                 <label className="block text-sm font-medium text-[#374151]  mb-1">Slug</label>
                                 <input
                                     type="text"
+                                    name="slug"
+                                    value={formData.slug}
+                                    onChange={handleChange}
                                     placeholder="naa.edu.az/"
                                     className="w-full border border-[#F7F7F7] rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                                 />
@@ -118,11 +203,24 @@ export default function UpdateModal({ openUpdate, onClose }: UpdateModalProps) {
                             <div>
                                 <label className="block text-sm font-medium text-[#374151] mb-1">Category</label>
                                 <div className="flex gap-3">
-                                    <button className="flex flex-row items-center gap-2 px-4 py-2 rounded-full border border-[#1447E6] text-[#1447E6] text-sm hover:bg-[#1447E6] hover:text-white cursor-pointer">
+                                    <button onClick={() =>
+                                        setformData((prev) => ({ ...prev, type: "News" }))
+                                    }
+                                        className={`flex flex-row items-center gap-2 px-4 py-2 rounded-full border text-sm cursor-pointer
+                                         ${formData.type === "News"
+                                                ? "bg-[#1447E6] text-white border-[#1447E6]"
+                                                : "border-[#1447E6] text-[#1447E6] hover:bg-[#1447E6] hover:text-white"}
+                                        `}>
                                         <BsNewspaper />
                                         <p>News</p>
                                     </button>
-                                    <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#1447E6] text-[#1447E6] text-sm hover:bg-[#1447E6] hover:text-white cursor-pointer">
+                                    <button onClick={() =>
+                                        setformData((prev) => ({ ...prev, type: "Announcement" }))
+                                    } className={`flex items-center gap-2 px-4 py-2 rounded-full border cursor-pointer
+                                        ${formData.type === "Announcement"
+                                            ? "bg-[#1447E6] text-white border-[#1447E6]"
+                                            : "border-[#1447E6] text-[#1447E6] hover:bg-[#1447E6] hover:text-white"}
+                                        `}>
                                         <BsMegaphone />
                                         <p>Announcement</p>
                                     </button>
@@ -130,10 +228,26 @@ export default function UpdateModal({ openUpdate, onClose }: UpdateModalProps) {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-[#374151] mb-1">Cover Image</label>
-                                <div className="w-full border border-[#F0F0F0] rounded-lg py-2 text-center text-gray-500 text-sm cursor-pointer hover:bg-gray-50">
-                                    Upload Cover Image
-                                </div>
+                                <label className="block text-sm font-medium text-[#374151] mb-1">
+                                    <p>Cover Image</p>
+                                    <div className="w-full h-14 border border-[#F0F0F0] rounded-lg py-2 text-center text-gray-500 text-sm cursor-pointer hover:bg-gray-50 flex items-center justify-center">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={HandleImageChange}
+                                            className="hidden"
+                                            placeholder="Upload Cover Image"
+                                        />
+                                        <p>Upload Cover Image</p>
+                                    </div>
+                                </label>
+                                {formData.image && (
+                                    <img
+                                        src={formData.image}
+                                        alt="cover"
+                                        className="mt-2 w-32 h-32 object-cover rounded-lg"
+                                    />
+                                )}
                             </div>
 
                             <div>
@@ -187,8 +301,11 @@ export default function UpdateModal({ openUpdate, onClose }: UpdateModalProps) {
                                         </button>
                                     </div>
 
-                                    <div className="h-40 bg-white text-sm text-[#F7F7F7] border-b rounded-lg">
-                                        <textarea className="w-full h-full" />
+                                    <div className="h-40 bg-white text-sm text-black border-b rounded-lg">
+                                        <textarea className="w-full h-full p-3"
+                                            name="description"
+                                            value={formData.description}
+                                            onChange={handleChange} />
                                     </div>
                                 </div>
                             </div>
@@ -268,7 +385,7 @@ export default function UpdateModal({ openUpdate, onClose }: UpdateModalProps) {
                             </div>
                             <div className="flex flex-row items-center gap-2">
                                 <div className={`w-1/2 h-1 rounded-full ${step === 2 ? 'bg-[#243C7B]' : 'bg-[#E0E7FA]'}`}></div>
-                                <div className={`w-1/2 h-1 rounded-full ${step === 2 ? 'bg-[#243C7B]' : 'bg-[#E0E7FA]'}`}></div>
+                                <div className={`w-1/2 h-1 rounded-full ${step > 1 ? 'bg-[#243C7B]' : 'bg-[#E0E7FA]'}`}></div>
                             </div>
                         </div>
                     </div>
@@ -277,10 +394,29 @@ export default function UpdateModal({ openUpdate, onClose }: UpdateModalProps) {
                         <div>
                             <label className="block text-sm font-medium text-[#374151] mb-1">Gallery Images</label>
                             <p className="text-[#374151] text-xs mb-3">JPG/PNG, multiple allowed</p>
-                            <div className="w-full border h-60 border-[#F0F0F0] rounded-lg py-2 text-center flex flex-col items-center justify-center text-gray-500 text-sm cursor-pointer hover:bg-gray-50">
+                            <label className="w-full border h-60 border-[#F0F0F0] rounded-lg py-2 text-center flex flex-col items-center justify-center text-gray-500 text-sm cursor-pointer hover:bg-gray-50">
                                 <BsUpload />
-                                <p>Upload an Image</p>
-                            </div>
+                                <p>Upload Images</p>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    onChange={handleGalleryChange}
+                                    className="hidden"
+                                />
+                            </label>
+                            {formData.galleryImages.length > 0 && (
+                                <div className="mt-3 grid grid-cols-4 gap-2">
+                                    {formData.galleryImages.map((img, i) => (
+                                        <img
+                                            key={i}
+                                            src={img}
+                                            alt="gallery"
+                                            className="w-full h-24 object-cover rounded-lg"
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -289,7 +425,7 @@ export default function UpdateModal({ openUpdate, onClose }: UpdateModalProps) {
                             className="w-full mt-6 bg-[#243C7B] text-white rounded-lg py-3 text-sm hover:bg-[#3D5DB2] cursor-pointer transition">
                             Back
                         </button>
-                        <button
+                        <button onClick={handleSubmit}
                             className="w-full mt-6 bg-[#243C7B] text-white rounded-lg py-3 text-sm hover:bg-[#3D5DB2] cursor-pointer transition">
                             Submit
                         </button>

@@ -6,9 +6,14 @@ import { useEffect, useMemo, useState } from "react";
 import { posts } from "../api/posts/postMock";
 import { useDisclosure } from "@mantine/hooks";
 import PostModal from "../components/RequestModals/PostModal";
-import SuccessfulModal from "../components/RequestModals/SuccessfulModal";
+import type { Post } from "../api/posts/postTypes";
+import UpdateModal from "../components/RequestModals/UpdateModal";
 
 export default function Home() {
+  const [data, setData] = useState<Post[]>(() => {
+    const saved = localStorage.getItem("posts");
+    return saved ? JSON.parse(saved) : posts;
+  });
 
   //Filter and Search
   const [typeFilter, setTypeFilter] = useState(() => {
@@ -25,7 +30,7 @@ export default function Home() {
   }, [typeFilter, statusFilter]);
 
   const filteredPosts = useMemo(() => {
-    return posts.filter((post) => {
+    return data.filter((post) => {
       const matchedType = typeFilter === 'All Posts' || post.type.toLowerCase() === typeFilter.toLowerCase();
       const matchedStatus = statusFilter === 'All Posts' || post.status.toLowerCase() === statusFilter.toLowerCase();
       const matchedSearch = post.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -33,15 +38,21 @@ export default function Home() {
 
       return matchedType && matchedStatus && matchedSearch;
     })
-  }, [typeFilter, statusFilter, search]);
+  }, [data, typeFilter, statusFilter, search]);
 
-   const [opened, { open, close }] = useDisclosure(false);
-  //  const [succ, { open: success, close: closeSuc }] = useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
+
+  // Update handler
+  const handleUpdate = (updatedPost: Post) => {
+    const updated = data.map(post => post.id === updatedPost.id ? updatedPost : post);
+    setData(updated);
+    localStorage.setItem("posts", JSON.stringify(updated));
+  };
 
   return (
     <div className="h-auto">
-      <PostModal opened={opened} onClose={close} />
-      {/* <SuccessfulModal openDelete={succ} onClose={closeSuc} /> */}
+      <PostModal opened={opened} onClose={() => { close(); setEditingPost(null); }} data={data} setSaveData={setData} />
       <div className="flex flex-row items-center justify-between">
         <div>
           <header className="font-semibold text-xl">News & Announcements</header>
@@ -87,14 +98,20 @@ export default function Home() {
         />
       </div>
       <div>
-        <PostTable filteredPosts={filteredPosts} />
+        <PostTable
+          filteredPosts={filteredPosts}
+          onEdit={(post) => {
+            setEditingPost(post);
+            open();
+          }}
+        />
+        <UpdateModal
+          openUpdate={opened}
+          onClose={() => { close(); setEditingPost(null); }}
+          editingPost={editingPost}
+          onSave={handleUpdate}
+        />
       </div>
-
-      {/* <PostModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onAdded={refreshPosts}
-      /> */}
     </div>
   )
 }
