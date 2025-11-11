@@ -41,12 +41,18 @@ export default function Home() {
   }, [data, typeFilter, statusFilter, search]);
 
   const [addOpened, { open: openAdd, close: closeAdd }] = useDisclosure(false);
-  const [editOpened, { close: closeEdit }] = useDisclosure(false);
+  const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
 
   // Update handler
   const handleUpdate = (updatedPost: Post) => {
     const updated = data.map(post => post.id === updatedPost.id ? updatedPost : post);
+    setData(updated);
+    localStorage.setItem("posts", JSON.stringify(updated));
+  };
+
+  const handleDelete = (postId: number) => {
+    const updated = data.filter((p) => p.id !== postId);
     setData(updated);
     localStorage.setItem("posts", JSON.stringify(updated));
   };
@@ -103,9 +109,9 @@ export default function Home() {
           filteredPosts={filteredPosts}
           onEdit={(post) => {
             setEditingPost(post);
-            openAdd();
+            openEdit();
           }}
-          
+          onDelete={handleDelete}
         />
         <UpdateModal
           openUpdate={editOpened}

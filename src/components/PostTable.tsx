@@ -22,14 +22,11 @@ import DeleteModal from './RequestModals/DeleteModal';
 interface PostTableProps {
     filteredPosts: Post[];
     onEdit: (post: Post) => void;
+    onDelete: (postId: number) => void;
 }
 
-export default function PostTable({ filteredPosts, onEdit }: PostTableProps) {
+export default function PostTable({ filteredPosts, onEdit, onDelete }: PostTableProps) {
 
-    const [data, setData] = useState<Post[]>(() => {
-        const saved = localStorage.getItem("posts");
-        return saved ? JSON.parse(saved) : posts;
-    });
 
     const [rowsPerPage, setRowsPerPage] = useState(() => {
         const saveRow = localStorage.getItem('rowsPerPage');
@@ -74,11 +71,11 @@ export default function PostTable({ filteredPosts, onEdit }: PostTableProps) {
         const start = (page - 1) * rowsPerPage;
         const end = page * rowsPerPage;
         setDisplayedPosts(latestPosts.slice(start, end));
-    }, [filteredPosts, page, rowsPerPage, data]);
+    }, [filteredPosts, page, rowsPerPage]);
 
     const [openDelete, setOpenDelete] = useState(false);
     const [deletingPost, setDeletingPost] = useState<Post | null>(null);
-    
+
 
     return (
         <Paper className="relative h-auto flex flex-col max-lg:z-0">
@@ -192,9 +189,7 @@ export default function PostTable({ filteredPosts, onEdit }: PostTableProps) {
                 onClose={() => setOpenDelete(false)}
                 onConfirm={() => {
                     if (deletingPost) {
-                        const updated = data.filter(p => p.id !== deletingPost.id);
-                        setData(updated);
-                        localStorage.setItem("posts", JSON.stringify(updated));
+                        onDelete(deletingPost.id);
                         setOpenDelete(false);
                         setDeletingPost(null);
                     }
