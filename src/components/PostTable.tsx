@@ -15,7 +15,6 @@ import {
     IconButton,
 } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { posts } from '../api/posts/postMock';
 import DeleteModal from './RequestModals/DeleteModal';
 
 
