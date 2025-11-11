@@ -40,7 +40,8 @@ export default function Home() {
     })
   }, [data, typeFilter, statusFilter, search]);
 
-  const [opened, { open, close }] = useDisclosure(false);
+  const [addOpened, { open: openAdd, close: closeAdd }] = useDisclosure(false);
+  const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
 
   // Update handler
@@ -52,20 +53,20 @@ export default function Home() {
 
   return (
     <div className="h-auto">
-      <PostModal opened={opened} onClose={() => { close(); setEditingPost(null); }} data={data} setSaveData={setData} />
+      <PostModal opened={addOpened} onClose={() => { closeAdd(); setEditingPost(null); }} data={data} setSaveData={setData} />
       <div className="flex flex-row items-center justify-between">
         <div>
           <header className="font-semibold text-xl">News & Announcements</header>
           <p className="text-[#787486]">{posts.length} posts</p>
         </div>
         <button className="bg-[#243C7B] rounded-3xl max-sm:rounded-full max-sm:p-2 px-4 py-2 flex flex-row gap-2 items-center text-white cursor-pointer hover:bg-[#1f3469]"
-          onClick={open}
+          onClick={openAdd}
         >
           <div className="rounded-full bg-[#3D5DB2] w-5 h-5 flex items-center justify-center text-white">
             <BsPlusLg />
           </div>
           <p className="max-lg:hidden">Add News or Announcement</p>
-          <p className="max-sm:hidden min-lg:hidden">Add</p>
+          <p className="max-sm:hidden lg:hidden">Add</p>
         </button>
       </div>
       <div className="flex flex-row items-center gap-5 w-full p-5 max-sm:p-0 max-sm:mb-5 border border-[#F7F7F7] mt-2 rounded-2xl max-sm:flex-col max-sm:items-start">
@@ -104,10 +105,11 @@ export default function Home() {
             setEditingPost(post);
             open();
           }}
+          
         />
         <UpdateModal
-          openUpdate={opened}
-          onClose={() => { close(); setEditingPost(null); }}
+          openUpdate={editOpened}
+          onClose={() => { closeEdit(); setEditingPost(null); }}
           editingPost={editingPost}
           onSave={handleUpdate}
         />

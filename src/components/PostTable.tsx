@@ -78,6 +78,7 @@ export default function PostTable({ filteredPosts, onEdit }: PostTableProps) {
 
     const [openDelete, setOpenDelete] = useState(false);
     const [deletingPost, setDeletingPost] = useState<Post | null>(null);
+    
 
     return (
         <Paper className="relative h-auto flex flex-col max-lg:z-0">
